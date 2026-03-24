@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Персональный отчёт ученика - ONE! Сити</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #0B1A33; 
+            --accent: #00C48C; 
+            --accent-alt: #FFB800; 
+            --accent-purple: #A855F7; 
+            --accent-teal: #2DD4BF; 
+            --white: #ffffff; 
+            --gray: #6B7280; 
+            --dark: #060d1a; 
+            --card-bg: #1a2a4a; 
+            --border: #2d4a6a; 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body { 
+            height: 100%; 
+            overflow-x: hidden; 
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--primary); 
+            color: var(--white); 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            position: sticky; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(11, 26, 51, 0.98); backdrop-filter: blur(20px);
+            padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .header-logo { display: flex; align-items: center; gap: 10px; }
+        .header-logo img { height: 36px; }
+        .header-logo-text { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1rem; color: var(--white); }
+        .header-logo-sub { font-size: 0.65rem; color: var(--gray); display: block; }
+        
+        .btn-print {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 18px; border-radius: 8px;
+            background: var(--accent); color: #000;
+            font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.85rem;
+            cursor: pointer; border: none; transition: all 0.3s ease;
+        }
+        .btn-print:hover { background: var(--accent-alt); }
+        
+        /* Main Container */
+        .container {
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        
+        .slide { 
+            width: 100%;
+            background: linear-gradient(135deg, var(--card-bg), #1f3055); 
+            border: 2px solid var(--border); 
+            border-radius: 24px; 
+            padding: 24px; 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); 
+        }
+        
+        .slide h2 { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: clamp(1.4em, 4vw, 2em); 
+            text-align: center; 
+            margin-bottom: 8px; 
+            background: linear-gradient(90deg, var(--accent), var(--accent-alt)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text; 
+        }
+        .slide-desc { text-align: center; color: var(--gray); margin-bottom: 20px; font-size: clamp(0.85em, 2vw, 1.1em); }
+        
+        /* Dashboard Grid */
+        .report-dashboard { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 16px; 
+        }
+        
+        .report-card { 
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); 
+            border: 1px solid var(--border); 
+            border-radius: 16px; 
+            padding: 20px; 
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .slide { padding: 24px; }
+            .report-dashboard { 
+                grid-template-columns: repeat(2, 1fr); 
+            }
+            .header-card { 
+                grid-column: span 2; 
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .container { padding: 12px; }
+            .slide { padding: 16px; border-radius: 16px; }
+            .report-dashboard { 
+                grid-template-columns: 1fr; 
+            }
+            .header-card { 
+                grid-column: span 1; 
+            }
+        }
+        
+        /* Header Card */
+        .header-card { 
+            display: flex; 
+            flex-wrap: wrap;
+            align-items: center; 
+            gap: 20px; 
+            background: linear-gradient(135deg, rgba(0,196,140,0.15), rgba(255,184,0,0.1)); 
+            border-color: var(--accent); 
+        }
+        
+        .report-avatar { 
+            width: 80px; height: 80px; 
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt)); 
+            border-radius: 50%; 
+            display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            flex-shrink: 0;
+        }
+        .avatar-emoji { font-size: 32px; }
+        .avatar-level { font-size: 12px; font-weight: 700; }
+        
+        .report-student-info { flex: 1; min-width: 200px; }
+        .report-student-info h3 { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: clamp(1.2em, 3vw, 1.8em); 
+            margin-bottom: 8px; 
+        }
+        .student-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+        .s-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 600; }
+        .s-badge.age { background: var(--accent); }
+        .s-badge.group { background: var(--accent-alt); color: #000; }
+        .s-badge.shift { background: var(--accent-purple); }
+        .s-badge.dept { background: var(--accent-teal); color: #000; }
+        
+        .report-summary { 
+            display: flex; 
+            gap: 20px; 
+            margin-left: auto;
+        }
+        .summary-item { text-align: center; }
+        .summary-num { display: block; font-size: clamp(1.8em, 4vw, 2.5em); font-weight: 800; color: var(--accent-alt); }
+        .summary-label { font-size: 0.8em; color: var(--gray); }
+        
+        /* Cards */
+        .report-card h4 { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1em; 
+            margin-bottom: 15px; 
+            color: var(--accent); 
+        }
+        
+        /* Radar */
+        .radar-container { text-align: center; }
+        .radar-chart { width: 100%; max-width: 280px; }
+        
+        /* Competency Map */
+        .comp-map { display: flex; flex-direction: column; gap: 8px; }
+        .comp-map-row { display: flex; justify-content: center; gap: 8px; }
+        .comp-map-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            min-width: 65px;
+            transition: all 0.3s ease;
+        }
+        .comp-map-item:hover {
+            background: rgba(0,196,140,0.2);
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+        .comp-map-icon { font-size: 18px; margin-bottom: 4px; }
+        .comp-map-name { font-size: 0.6em; font-weight: 600; text-align: center; line-height: 1.2; }
+        .comp-map-value { font-size: 0.75em; font-weight: 700; color: var(--accent-alt); margin-top: 2px; }
+        .comp-map-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(0,196,140,0.25), rgba(255,184,0,0.15));
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            min-width: 70px;
+            min-height: 70px;
+        }
+        .comp-map-center-icon { font-size: 24px; }
+        .comp-map-center-label { font-size: 0.55em; color: var(--gray); }
+        .comp-map-center-text { font-size: 0.8em; font-weight: 700; color: var(--accent); }
+        .comp-map-empty { min-width: 65px; }
+        
+        /* Projects */
+        .project-timeline { display: flex; flex-direction: column; gap: 12px; }
+        .timeline-item { display: flex; gap: 12px; align-items: flex-start; }
+        .timeline-marker { 
+            width: 38px; height: 38px; 
+            border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 18px; flex-shrink: 0; 
+        }
+        .timeline-marker.p1 { background: var(--accent); }
+        .timeline-marker.p2 { background: var(--accent-alt); color: #000; }
+        .timeline-content { display: flex; flex-direction: column; gap: 2px; }
+        .timeline-content strong { font-size: 0.9em; }
+        .timeline-content span { font-size: 0.8em; color: var(--gray); }
+        .timeline-type { 
+            display: inline-block; padding: 2px 8px; 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 8px; font-size: 0.7em; width: fit-content; 
+        }
+        
+        /* Roles */
+        .roles-timeline { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .role-chip { 
+            padding: 6px 12px; 
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent)); 
+            border-radius: 20px; font-size: 0.8em; 
+            display: flex; align-items: center; gap: 6px; 
+        }
+        .role-num { 
+            width: 18px; height: 18px; 
+            background: rgba(255,255,255,0.2); 
+            border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 0.75em; font-weight: 700; 
+        }
+        
+        /* Skills */
+        .skills-progress-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .skill-ring { text-align: center; position: relative; }
+        .skill-ring svg { width: 50px; height: 50px; }
+        .ring-value { 
+            position: absolute; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            font-weight: 700; font-size: 0.75em; 
+        }
+        .ring-label { display: block; margin-top: 4px; font-size: 0.6em; color: var(--gray); line-height: 1.2; }
+        
+        /* DISC Profiling */
+        .disc-container { display: flex; flex-direction: column; gap: 10px; }
+        .disc-bar { display: flex; align-items: center; gap: 10px; }
+        .disc-label { width: 30px; font-weight: 700; font-size: 0.9em; flex-shrink: 0; }
+        .disc-track { flex: 1; height: 22px; background: rgba(255,255,255,0.1); border-radius: 11px; overflow: hidden; position: relative; }
+        .disc-fill { height: 100%; border-radius: 11px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; }
+        .disc-value { font-size: 0.75em; font-weight: 700; color: #000; }
+        .disc-d { background: linear-gradient(90deg, #EF4444, #F87171); }
+        .disc-i { background: linear-gradient(90deg, #F59E0B, #FBBF24); }
+        .disc-s { background: linear-gradient(90deg, #22C55E, #4ADE80); }
+        .disc-c { background: linear-gradient(90deg, #3B82F6, #60A5FA); }
+        .disc-desc { font-size: 0.8em; color: var(--gray); text-align: center; margin-top: 10px; }
+        .disc-primary { display: flex; justify-content: center; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+        .disc-badge { padding: 3px 10px; border-radius: 20px; font-size: 0.7em; font-weight: 600; }
+        
+        /* Web Competencies Card */
+        .web-comp-list { display: flex; flex-direction: column; gap: 8px; }
+        .web-comp-item { 
+            display: flex; align-items: center; gap: 10px; 
+            padding: 8px 12px; 
+            background: rgba(255,255,255,0.04); 
+            border-radius: 10px; 
+            font-size: 0.85em; 
+        }
+        .web-comp-icon { font-size: 18px; }
+        .web-comp-name { flex: 1; }
+        .web-comp-level { 
+            padding: 2px 8px; border-radius: 10px; font-size: 0.75em; font-weight: 600; 
+        }
+        .level-high { background: var(--accent); color: #000; }
+        .level-mid { background: var(--accent-alt); color: #000; }
+        .level-low { background: var(--accent-purple); }
+        
+        /* Hard Skills Card - Competency Map Style */
+        .hard-skills-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 6px; 
+        }
+        .hard-skill-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 10px 6px; 
+            background: rgba(255,255,255,0.04); 
+            border-radius: 10px; 
+            text-align: center;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .hard-skill-item:hover {
+            background: rgba(0,196,140,0.15);
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+        .hard-skill-icon { 
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+        .hard-skill-info { width: 100%; }
+        .hard-skill-name { font-size: 0.65em; font-weight: 600; display: block; line-height: 1.2; }
+        .hard-skill-detail { font-size: 0.55em; color: var(--gray); display: block; margin-top: 2px; }
+        .hard-skill-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        .hard-skill-fill { height: 100%; border-radius: 2px; }
+        
+        /* Competencies Map Redesign */
+        .comp-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+        .comp-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 4px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .comp-item:hover {
+            background: rgba(0,196,140,0.15);
+            transform: scale(1.03);
+            border-color: var(--accent);
+        }
+        .comp-icon { font-size: 20px; margin-bottom: 4px; }
+        .comp-name { font-size: 0.6em; font-weight: 600; line-height: 1.2; }
+        .comp-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+        .comp-fill { height: 100%; border-radius: 2px; }
+        
+        /* 12 Competencies specific colors */
+        .comp-1 .comp-fill { background: linear-gradient(90deg, #00C48C, #2DD4BF); }
+        .comp-2 .comp-fill { background: linear-gradient(90deg, #FFB800, #F59E0B); }
+        .comp-3 .comp-fill { background: linear-gradient(90deg, #A855F7, #8B5CF6); }
+        .comp-4 .comp-fill { background: linear-gradient(90deg, #3B82F6, #60A5FA); }
+        .comp-5 .comp-fill { background: linear-gradient(90deg, #EF4444, #F87171); }
+        .comp-6 .comp-fill { background: linear-gradient(90deg, #22C55E, #4ADE80); }
+        .comp-7 .comp-fill { background: linear-gradient(90deg, #F472B6, #EC4899); }
+        .comp-8 .comp-fill { background: linear-gradient(90deg, #14B8A6, #2DD4BF); }
+        .comp-9 .comp-fill { background: linear-gradient(90deg, #F97316, #FB923C); }
+        .comp-10 .comp-fill { background: linear-gradient(90deg, #6366F1, #818CF8); }
+        .comp-11 .comp-fill { background: linear-gradient(90deg, #84CC16, #A3E635); }
+        .comp-12 .comp-fill { background: linear-gradient(90deg, #D946EF, #E879F9); }
+        
+        /* Career */
+        .career-path { display: flex; flex-direction: column; gap: 15px; }
+        .career-main { 
+            display: flex; gap: 15px; align-items: center; 
+            padding: 15px; 
+            background: linear-gradient(135deg, rgba(0,196,140,0.1), rgba(255,184,0,0.1)); 
+            border-radius: 12px; 
+        }
+        .career-icon { font-size: 32px; }
+        .career-info strong { display: block; font-size: 1em; margin-bottom: 4px; }
+        .career-info p { color: var(--gray); font-size: 0.85em; }
+        .career-next .next-label { display: block; margin-bottom: 8px; color: var(--gray); font-size: 0.85em; }
+        .next-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .next-tag { 
+            padding: 6px 12px; 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; font-size: 0.8em; 
+        }
+        
+        /* Achievements */
+        .achievements-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .achievement { 
+            display: flex; align-items: center; gap: 10px; 
+            padding: 10px; 
+            background: rgba(255,255,255,0.03); 
+            border-radius: 10px; 
+        }
+        .ach-icon { font-size: 20px; }
+        .ach-name { font-size: 0.85em; }
+        
+        .slide-number { text-align: right; margin-top: 20px; color: var(--gray); font-size: 0.85em; }
+        
+        /* ===== POPUP STYLES ===== */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .popup-overlay.active {
+            display: flex;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .popup-content {
+            background: linear-gradient(135deg, var(--card-bg), #1f3055);
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 196, 140, 0.3);
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .popup-close:hover {
+            background: var(--accent);
+            color: #000;
+        }
+        
+        .popup-icon {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .popup-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .popup-info {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .popup-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .popup-info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .popup-info-label {
+            color: var(--gray);
+            font-size: 0.85em;
+        }
+        
+        .popup-info-value {
+            color: var(--accent-alt);
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .popup-fact {
+            margin-top: 15px;
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(0,196,140,0.2), rgba(255,184,0,0.1));
+            border-radius: 10px;
+            font-size: 0.9em;
+            text-align: center;
+            color: var(--white);
+        }
+        
+        .popup-fact-icon {
+            margin-right: 5px;
+        }
+        
+        /* Clickable elements hover effect */
+        .clickable {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .clickable:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+        
+        .clickable::after {
+            content: '👆';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .clickable:hover::after {
+            opacity: 1;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        
+        /* Tablet */
+        @media (min-width: 768px) {
+            .container { padding: 30px; }
+            .slide { padding: 30px; border-radius: 30px; }
+            .report-dashboard { 
+                grid-template-columns: repeat(3, 1fr); 
+                gap: 20px; 
+            }
+            .header-card { 
+                grid-column: span 3; 
+            }
+            .skills-progress-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        
+        /* Desktop */
+        @media (min-width: 1024px) {
+            .header { padding: 15px 40px; }
+            .container { padding: 40px; }
+            .slide { padding: 40px; }
+            .report-dashboard { 
+                grid-template-columns: repeat(3, 1fr); 
+                gap: 20px; 
+            }
+            .header-card { grid-column: span 3; }
+            .skills-progress-grid { grid-template-columns: repeat(4, 1fr); }
+            .skill-ring svg { width: 70px; height: 70px; }
+            .radar-chart { max-width: 260px; }
+        }
+        
+        /* ===== PRINT / PDF ===== */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+            
+            html, body {
+                height: auto;
+                width: 210mm;
+                max-width: 210mm;
+                margin: 0;
+                padding: 0;
+                background: white !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .header { 
+                display: none !important; 
+            }
+            
+            .container {
+                display: block;
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .slide {
+                width: 100%;
+                max-width: 190mm;
+                margin: 0 auto;
+                background: #f8f9fa !important;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                padding: 10mm;
+                box-shadow: none;
+                page-break-inside: avoid;
+                page-break-after: avoid;
+            }
+            
+            .report-dashboard {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            
+            .header-card {
+                grid-column: span 3;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                padding: 10px;
+                background: linear-gradient(135deg, rgba(0,196,140,0.2), rgba(255,184,0,0.15)) !important;
+                border-color: #00C48C;
+            }
+            
+            .report-avatar {
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, #00C48C, #FFB800) !important;
+            }
+            .avatar-emoji { font-size: 24px; }
+            .avatar-level { font-size: 10px; }
+            
+            .report-student-info h3 { font-size: 14pt; }
+            .student-badges { gap: 5px; }
+            .s-badge { padding: 2px 8px; font-size: 8pt; }
+            
+            .summary-num { font-size: 18pt; color: #FFB800; }
+            .summary-label { font-size: 8pt; }
+            
+            .report-card {
+                background: #fff !important;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 10px;
+            }
+            
+            .report-card h4 { 
+                font-size: 10pt; 
+                margin-bottom: 8px;
+                color: #00C48C;
+            }
+            
+            .radar-chart { max-width: 160px; }
+            
+            .comp-map { gap: 4px; }
+            .comp-map-row { gap: 4px; }
+            .comp-map-item { padding: 4px 3px; min-width: 40px; }
+            .comp-map-icon { font-size: 10px; margin-bottom: 1px; }
+            .comp-map-name { font-size: 5pt; }
+            .comp-map-value { font-size: 6pt; }
+            .comp-map-center { padding: 6px; min-width: 35px; min-height: 35px; }
+            .comp-map-center-icon { font-size: 12px; }
+            .comp-map-center-label { font-size: 4pt; }
+            .comp-map-center-text { font-size: 6pt; }
+            .comp-map-empty { min-width: 40px; }
+            
+            .timeline-item { gap: 8px; }
+            .timeline-marker { 
+                width: 28px; height: 28px; 
+                font-size: 14px; 
+            }
+            .timeline-content strong { font-size: 9pt; }
+            .timeline-content span { font-size: 8pt; }
+            
+            .role-chip { 
+                padding: 3px 8px; 
+                font-size: 7pt; 
+            }
+            .role-num { width: 14px; height: 14px; font-size: 7pt; }
+            
+            .skills-progress-grid { 
+                grid-template-columns: repeat(4, 1fr); 
+                gap: 6px; 
+            }
+            .skill-ring svg { width: 40px; height: 40px; }
+            .ring-value { font-size: 7pt; }
+            .ring-label { font-size: 5pt; margin-top: 2px; }
+            
+            .career-icon { font-size: 24px; }
+            .career-info strong { font-size: 10pt; }
+            .career-info p { font-size: 8pt; }
+            .next-tag { padding: 3px 8px; font-size: 7pt; }
+            
+            .achievement { padding: 6px; }
+            .ach-icon { font-size: 14px; }
+            .ach-name { font-size: 8pt; }
+            
+            .disc-bar { gap: 6px; }
+            .disc-label { width: 20px; font-size: 8pt; }
+            .disc-track { height: 18px; }
+            .disc-value { font-size: 6pt; }
+            .disc-desc { font-size: 7pt; margin-top: 5px; }
+            .disc-badge { padding: 2px 6px; font-size: 6pt; }
+            
+            .web-comp-list { gap: 4px; }
+            .web-comp-item { padding: 4px 6px; gap: 6px; }
+            .web-comp-icon { font-size: 12px; }
+            .web-comp-name { font-size: 7pt; }
+            .web-comp-level { padding: 1px 5px; font-size: 5pt; }
+            
+            .hard-skills-grid { gap: 4px; }
+            .hard-skill-item { padding: 4px; gap: 6px; }
+            .hard-skill-icon { width: 24px; height: 24px; font-size: 12px; border-radius: 4px; }
+            .hard-skill-name { font-size: 7pt; }
+            .hard-skill-detail { font-size: 5pt; }
+            
+            .comp-grid { gap: 3px; }
+            .comp-item { padding: 4px 2px; }
+            .comp-icon { font-size: 10px; margin-bottom: 2px; }
+            .comp-name { font-size: 5pt; }
+            .comp-bar { height: 3px; margin-top: 3px; }
+            
+            .slide-number { 
+                font-size: 8pt; 
+                margin-top: 10px; 
+            }
+            
+            .slide h2 { font-size: 14pt; }
+            .slide-desc { font-size: 9pt; margin-bottom: 10px; }
+            
+            /* Скрываем popup в печати */
+            .popup-overlay { display: none !important; }
+            .clickable { pointer-events: none; }
+            .clickable::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-logo">
+            <img src="logo.png" alt="ONE! International School" onerror="this.style.display='none'">
+            <div class="header-logo-text">ONE! International School <span class="header-logo-sub">Растим людей, способных менять мир к лучшему</span></div>
+        </div>
+        <button onclick="window.print()" class="btn-print">📄 Сохранить как PDF</button>
+    </header>
+
+    <div class="container">
+        <section class="slide">
+            <h2>📋 Карта талантов</h2>
+            <p class="slide-desc">Комплексный профориентационный анализ студента</p>
+            <div class="report-dashboard">
+                <div class="report-card header-card">
+                    <div class="report-avatar clickable" data-type="avatar"><span class="avatar-emoji">🚀</span><div class="avatar-level"> 5 Int </div></div>
+                    <div class="report-student-info">
+                        <h3>Жанна Карманова</h3>
+                        <div class="student-badges">
+                            <span class="s-badge age clickable" data-type="age">10 лет</span>
+                            <span class="s-badge group clickable" data-type="group">Сильная группа</span>
+                            <span class="s-badge shift clickable" data-type="shift">Утренняя смена</span>
+                            <span class="s-badge dept clickable" data-type="dept">Гуманитарное направление</span>
+                        </div>
+                    </div>
+                    <div class="report-summary">
+                        <div class="summary-item clickable" data-type="projects"><span class="summary-num">2</span><span class="summary-label">Проекта</span></div>
+                        <div class="summary-item clickable" data-type="roles"><span class="summary-num">5</span><span class="summary-label">Ролей</span></div>
+                        <div class="summary-item clickable" data-type="skills"><span class="summary-num">12</span><span class="summary-label">Навыков</span></div>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <h4>🎯 12 универсальных компетенций</h4>
+                    <div class="radar-container clickable" data-type="radar">
+                        <svg viewBox="0 0 360 360" class="radar-chart">
+                            <!-- Background circles -->
+                            <circle cx="180" cy="180" r="140" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                            <circle cx="180" cy="180" r="105" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <circle cx="180" cy="180" r="70" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                            <circle cx="180" cy="180" r="35" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                            
+                            <!-- Grid lines (12 points) -->
+                            <line x1="180" y1="40" x2="180" y2="320" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <line x1="62" y1="76" x2="298" y2="284" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <line x1="40" y1="180" x2="320" y2="180" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <line x1="62" y1="284" x2="298" y2="76" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <line x1="180" y1="320" x2="180" y2="40" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <line x1="298" y1="284" x2="62" y2="76" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            
+                            <!-- Data polygon (12 points) -->
+                            <polygon points="180,56 268,76 312,144 312,216 268,284 180,304 92,284 48,216 48,144 92,76 128,124 232,124" fill="rgba(0, 196, 140, 0.25)" stroke="#00C48C" stroke-width="2"/>
+                            
+                            <!-- Data points -->
+                            <circle cx="180" cy="56" r="5" fill="#00C48C"/><circle cx="268" cy="76" r="5" fill="#FFB800"/><circle cx="312" cy="144" r="5" fill="#A855F7"/><circle cx="312" cy="216" r="5" fill="#3B82F6"/><circle cx="268" cy="284" r="5" fill="#EF4444"/><circle cx="180" cy="304" r="5" fill="#22C55E"/><circle cx="92" cy="284" r="5" fill="#F472B6"/><circle cx="48" cy="216" r="5" fill="#14B8A6"/><circle cx="48" cy="144" r="5" fill="#F97316"/><circle cx="92" cy="76" r="5" fill="#6366F6"/><circle cx="128" cy="124" r="5" fill="#84CC16"/><circle cx="232" cy="124" r="5" fill="#D946EF"/>
+                            
+                            <!-- Labels -->
+                            <text x="180" y="35" text-anchor="middle" fill="#fff" font-size="7">Критич.</text>
+                            <text x="295" y="73" text-anchor="start" fill="#FFB800" font-size="7">Коммуник.</text>
+                            <text x="335" y="145" text-anchor="start" fill="#A855F7" font-size="7">Самоорг.</text>
+                            <text x="335" y="220" text-anchor="start" fill="#3B82F6" font-size="7">Инициат.</text>
+                            <text x="290" y="295" text-anchor="start" fill="#EF4444" font-size="7">Реш.пр.</text>
+                            <text x="180" y="330" text-anchor="middle" fill="#22C55E" font-size="7">Ум.учиться</text>
+                            <text x="65" y="295" text-anchor="end" fill="#F472B6" font-size="7">Креатив.</text>
+                            <text x="25" y="220" text-anchor="end" fill="#14B8A6" font-size="7">Сотрудн.</text>
+                            <text x="25" y="140" text-anchor="end" fill="#F97316" font-size="7">Любозн.</text>
+                            <text x="75" y="73" text-anchor="end" fill="#6366F6" font-size="7">Адаптив.</text>
+                            <text x="115" y="110" text-anchor="end" fill="#84CC16" font-size="7">Настойч.</text>
+                            <text x="245" y="110" text-anchor="start" fill="#D946EF" font-size="7">Гражд.п.</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <h4>🏆 Предпринимательские проекты</h4>
+                    <div class="project-timeline">
+                        <div class="timeline-item clickable" data-type="project1"><div class="timeline-marker p1">🏙️</div><div class="timeline-content"><strong>Умный город (IoT)</strong><span>Мониторинг воздуха</span><span class="timeline-type">Технический</span></div></div>
+                        <div class="timeline-item clickable" data-type="project2"><div class="timeline-marker p2">📊</div><div class="timeline-content"><strong>Городские данные</strong><span>Дашборд транспорта</span><span class="timeline-type">Аналитический</span></div></div>
+                    </div>
+                    <h4 style="margin-top: 15px;">🎭 Роли</h4>
+                    <div class="roles-timeline">
+                        <div class="role-chip clickable" data-type="role1"><span class="role-num">1</span>Лидер команды</div>
+                        <div class="role-chip clickable" data-type="role2"><span class="role-num">2</span>Спикер</div>
+                        <div class="role-chip clickable" data-type="role3"><span class="role-num">3</span>Координатор</div>
+                        <div class="role-chip clickable" data-type="role4"><span class="role-num">4</span>Аналитик</div>
+                        <div class="role-chip clickable" data-type="role5"><span class="role-num">5</span>Мастер</div>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <h4>💪 12 Универсальных компетенций</h4>
+                    <div class="comp-map">
+                        <div class="comp-map-row">
+                            <div class="comp-map-item clickable" data-type="comp1"><span class="comp-map-icon">🧠</span><span class="comp-map-name">Критич. мышление</span><span class="comp-map-value">85%</span></div>
+                            <div class="comp-map-item clickable" data-type="comp2"><span class="comp-map-icon">💬</span><span class="comp-map-name">Коммуникация</span><span class="comp-map-value">90%</span></div>
+                            <div class="comp-map-item clickable" data-type="comp3"><span class="comp-map-icon">📋</span><span class="comp-map-name">Самоорганиз.</span><span class="comp-map-value">78%</span></div>
+                            <div class="comp-map-item clickable" data-type="comp4"><span class="comp-map-icon">🚀</span><span class="comp-map-name">Инициатива</span><span class="comp-map-value">82%</span></div>
+                        </div>
+                        <div class="comp-map-row">
+                            <div class="comp-map-item clickable" data-type="comp5"><span class="comp-map-icon">🧩</span><span class="comp-map-name">Реш. пробл.</span><span class="comp-map-value">88%</span></div>
+                            <div class="comp-map-center">
+                                <span class="comp-map-center-icon">⭐</span>
+                                <span class="comp-map-center-label">Профиль</span>
+                                <span class="comp-map-center-text">Лидер</span>
+                            </div>
+                            <div class="comp-map-item clickable" data-type="comp6"><span class="comp-map-icon">📚</span><span class="comp-map-name">Умение учиться</span><span class="comp-map-value">75%</span></div>
+                        </div>
+                        <div class="comp-map-row">
+                            <div class="comp-map-item clickable" data-type="comp7"><span class="comp-map-icon">🎨</span><span class="comp-map-name">Креативность</span><span class="comp-map-value">80%</span></div>
+                            <div class="comp-map-item clickable" data-type="comp8"><span class="comp-map-icon">🤝</span><span class="comp-map-name">Сотруднич.</span><span class="comp-map-value">92%</span></div>
+                            <div class="comp-map-item clickable" data-type="comp9"><span class="comp-map-icon">🔍</span><span class="comp-map-name">Любознат.</span><span class="comp-map-value">95%</span></div>
+                            <div class="comp-map-item clickable" data-type="comp10"><span class="comp-map-icon">🔄</span><span class="comp-map-name">Адаптивн.</span><span class="comp-map-value">77%</span></div>
+                        </div>
+                        <div class="comp-map-row">
+                            <div class="comp-map-item clickable" data-type="comp11"><span class="comp-map-icon">💪</span><span class="comp-map-name">Настойчив.</span><span class="comp-map-value">84%</span></div>
+                            <div class="comp-map-item clickable" data-type="comp12"><span class="comp-map-icon">🏛️</span><span class="comp-map-name">Гражд. поз.</span><span class="comp-map-value">70%</span></div>
+                            <div class="comp-map-empty"></div>
+                            <div class="comp-map-empty"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <h4>🎓 Карьерный маршрут</h4>
+                    <div class="career-path">
+                        <div class="career-main clickable" data-type="career"><span class="career-icon">⚙️</span><div class="career-info"><strong>Гуманитарный профиль</strong><p>Высокий потенциал в  коммуникации и творчестве</p></div></div>
+                        <div class="career-next"><span class="next-label">Рекомендуемые кружки:</span><div class="next-tags"><span class="next-tag clickable" data-type="кружок1">🤖 Робототехника</span><span class="next-tag clickable" data-type="кружок2">🔧 Arduino</span><span class="next-tag clickable" data-type="кружок3">🎨 3D-моделирование</span></div></div>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <h4>🏅 Достижения 2025 / 2026 </h4>
+                    <div class="achievements-grid">
+                        <div class="achievement clickable" data-type="ach1"><span class="ach-icon">🎯</span><span class="ach-name">Лидер команды</span></div>
+                        <div class="achievement clickable" data-type="ach2"><span class="ach-icon">💡</span><span class="ach-name">Инноватор</span></div>
+                        <div class="achievement clickable" data-type="ach3"><span class="ach-icon">🤝</span><span class="ach-name">Командный игрок</span></div>
+                        <div class="achievement clickable" data-type="ach4"><span class="ach-icon">📣</span><span class="ach-name">Лучший спикер</span></div>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <h4>🔴 DISC Профиль</h4>
+                    <div class="disc-container clickable" data-type="disc">
+                        <div class="disc-bar">
+                            <span class="disc-label" style="color:#EF4444;">D</span>
+                            <div class="disc-track"><div class="disc-fill disc-d" style="width:65%;"><span class="disc-value">65%</span></div></div>
+                        </div>
+                        <div class="disc-bar">
+                            <span class="disc-label" style="color:#F59E0B;">I</span>
+                            <div class="disc-track"><div class="disc-fill disc-i" style="width:78%;"><span class="disc-value">78%</span></div></div>
+                        </div>
+                        <div class="disc-bar">
+                            <span class="disc-label" style="color:#22C55E;">S</span>
+                            <div class="disc-track"><div class="disc-fill disc-s" style="width:82%;"><span class="disc-value">82%</span></div></div>
+                        </div>
+                        <div class="disc-bar">
+                            <span class="disc-label" style="color:#3B82F6;">C</span>
+                            <div class="disc-track"><div class="disc-fill disc-c" style="width:71%;"><span class="disc-value">71%</span></div></div>
+                        </div>
+                        <p class="disc-desc">Тип:SI (Стабильный-Влиятельный)</p>
+                        <div class="disc-primary">
+                            <span class="disc-badge" style="background:#22C55E;color:#000;">S - 82%</span>
+                            <span class="disc-badge" style="background:#F59E0B;color:#000;">I - 78%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="report-card">
+                    <h4>🌐 IT-компетенции</h4>
+                    <div class="web-comp-list">
+                        <div class="web-comp-item clickable" data-type="web1"><span class="web-comp-icon">🎨</span><span class="web-comp-name">SCRATCH</span><span class="web-comp-level level-high">Высокий</span></div>
+                        <div class="web-comp-item clickable" data-type="web2"><span class="web-comp-icon">💻</span><span class="web-comp-name">WEB design</span><span class="web-comp-level level-high">Высокий</span></div>
+                        <div class="web-comp-item clickable" data-type="web3"><span class="web-comp-icon">⚡</span><span class="web-comp-name">MS Office</span><span class="web-comp-level level-mid">Средний</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">ONE! City — Персональный отчёт</div>
+        </section>
+    </div>
+
+    <!-- Popup Modal -->
+    <div class="popup-overlay" id="popup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup()">✕</button>
+            <div class="popup-icon" id="popupIcon">📊</div>
+            <div class="popup-title" id="popupTitle">Информация</div>
+            <div class="popup-info" id="popupInfo"></div>
+            <div class="popup-fact" id="popupFact"></div>
+        </div>
+    </div>
+
+    <script>
+        // База данных с случайной логической информацией для каждого типа элементов
+        const popupData = {
+            avatar: {
+                icon: '🚀',
+                title: 'Профиль ученика',
+                info: [
+                    { label: 'ID ученика', value: 'STU-2024-0847' },
+                    { label: 'Уровень', value: '5 (Эксперт)' },
+                    { label: 'Опыт', value: '2,450 XP' },
+                    { label: 'Следующий уровень', value: 'Через 550 XP' }
+                ],
+                facts: [
+                    'Ученик находится в топ-15% по скорости развития навыков',
+                    'Общее время обучения: 156 часов',
+                    'Посещаемость: 98%',
+                    'Средний балл активности: 4.7/5'
+                ]
+            },
+            age: {
+                icon: '🎂',
+                title: 'Возрастная категория',
+                info: [
+                    { label: 'Возраст', value: '10 лет' },
+                    { label: 'Категория', value: 'Младшие подростки' },
+                    { label: 'Возрастная группа', value: '10-12 лет' }
+                ],
+                facts: [
+                    'Оптимальный возраст для развития технических навыков',
+                    'Рекомендуемая нагрузка: 4-5 часов в день',
+                    'Наиболее эффективное обучение через игру'
+                ]
+            },
+            group: {
+                icon: '👥',
+                title: 'Группа',
+                info: [
+                    { label: 'Название', value: 'Старшая группа' },
+                    { label: 'Номер', value: 'Группа А' },
+                    { label: 'Размер группы', value: '12 человек' }
+                ],
+                facts: [
+                    'Старшая группа - возраст 10-12 лет',
+                    'Оптимальный размер для командной работы',
+                    'Средний возраст участников: 11 лет'
+                ]
+            },
+            shift: {
+                icon: '📅',
+                title: 'Смена',
+                info: [
+                    { label: 'Номер смены', value: 'Смена 1' },
+                    { label: 'Период', value: '01.06 - 15.06' },
+                    { label: 'Длительность', value: '14 дней' }
+                ],
+                facts: [
+                    'Первая смена - самая популярная',
+                    'Погода: 80% солнечных дней',
+                    'Тематика: "Технологии будущего"'
+                ]
+            },
+            dept: {
+                icon: '🏢',
+                title: 'Направление',
+                info: [
+                    { label: 'Название', value: 'Цифровой штаб' },
+                    { label: 'Куратор', value: 'Анна Петрова' },
+                    { label: 'Специализация', value: 'Программирование' }
+                ],
+                facts: [
+                    'Самое популярное направление в этом сезоне',
+                    'Количество проектов: 24',
+                    'Средний рейтинг: 4.8/5'
+                ]
+            },
+            projects: {
+                icon: '📁',
+                title: 'Проекты',
+                info: [
+                    { label: 'Всего проектов', value: '2' },
+                    { label: 'Завершённых', value: '2' },
+                    { label: 'В процессе', value: '0' }
+                ],
+                facts: [
+                    'Успеваемость по проектам: 100%',
+                    'Оба проекта получили оценку "Отлично"',
+                    'Средняя продолжительность проекта: 5 дней'
+                ]
+            },
+            roles: {
+                icon: '🎭',
+                title: 'Роли в команде',
+                info: [
+                    { label: 'Всего ролей', value: '5' },
+                    { label: 'Основных', value: '2' },
+                    { label: 'Вспомогательных', value: '3' }
+                ],
+                facts: [
+                    'Наиболее частая роль: Шерпа (лидер направления)',
+                    'Роль "Спикер" выполнялась лучше всех в группе',
+                    'Универсальный игрок - подходит для любой роли'
+                ]
+            },
+            skills: {
+                icon: '💪',
+                title: 'Навыки',
+                info: [
+                    { label: 'Всего навыков', value: '12' },
+                    { label: 'Прокачано', value: '10' },
+                    { label: 'В развитии', value: '2' }
+                ],
+                facts: [
+                    'Самый сильный навык: Командная работа (90%)',
+                    'Динамика роста: +15% за смену',
+                    'Рекомендуется развивать: Техническую документацию'
+                ]
+            },
+            radar: {
+                icon: '🕸️',
+                title: 'Карта компетенций',
+                info: [
+                    { label: 'Технологии', value: '85%' },
+                    { label: 'Команда', value: '90%' },
+                    { label: 'Креатив', value: '75%' },
+                    { label: 'Лидерство', value: '80%' }
+                ],
+                facts: [
+                    'Профиль: "Технический лидер"',
+                    'Самая сильная сторона: Командное взаимодействие',
+                    'Зона роста: Креативное мышление'
+                ]
+            },
+            project1: {
+                icon: '🏙️',
+                title: 'Проект: Умный город (IoT)',
+                info: [
+                    { label: 'Тип', value: 'Технический' },
+                    { label: 'Статус', value: 'Завершён' },
+                    { label: 'Оценка', value: '5/5' }
+                ],
+                facts: [
+                    'Разработана система мониторинга воздуха',
+                    'Использовано 3 датчика',
+                    'Проект представлен на демо-дне'
+                ]
+            },
+            project2: {
+                icon: '📊',
+                title: 'Проект: Городские данные',
+                info: [
+                    { label: 'Тип', value: 'Аналитический' },
+                    { label: 'Статус', value: 'Завершён' },
+                    { label: 'Оценка', value: '4/5' }
+                ],
+                facts: [
+                    'Создан интерактивный дашборд',
+                    'Обработано 10,000+ записей данных',
+                    'Лучший визуализатор в группе'
+                ]
+            },
+            role1: {
+                icon: '🏔️',
+                title: 'Роль: Шерпа',
+                info: [
+                    { label: 'Определение', value: 'Лидер направления' },
+                    { label: 'Количество', value: '1 раз' },
+                    { label: 'Эффективность', value: '95%' }
+                ],
+                facts: [
+                    'Шерпа - ведущий в своём направлении',
+                    'Отвечал за координацию команды из 4 человек',
+                    'Получил положительный фидбек от команды'
+                ]
+            },
+            role2: {
+                icon: '🎤',
+                title: 'Роль: Спикер',
+                info: [
+                    { label: 'Определение', value: 'Представитель группы' },
+                    { label: 'Количество', value: '1 раз' },
+                    { label: 'Эффективность', value: '92%' }
+                ],
+                facts: [
+                    'Выступал с презентацией перед жюри',
+                    'Умение чётко излагать мысли',
+                    'Хорошая дикция и уверенность'
+                ]
+            },
+            role3: {
+                icon: '🎯',
+                title: 'Роль: Координатор',
+                info: [
+                    { label: 'Определение', value: 'Организатор процессов' },
+                    { label: 'Количество', value: '1 раз' },
+                    { label: 'Эффективность', value: '88%' }
+                ],
+                facts: [
+                    'Координировал расписание команды',
+                    'Следил за дедлайнами',
+                    'Эффективное распределение задач'
+                ]
+            },
+            role4: {
+                icon: '📈',
+                title: 'Роль: Аналитик',
+                info: [
+                    { label: 'Определение', value: 'Обработка данных' },
+                    { label: 'Количество', value: '1 раз' },
+                    { label: 'Эффективность', value: '85%' }
+                ],
+                facts: [
+                    'Анализировал данные проекта',
+                    'Создавал отчёты',
+                    'Находил закономерности'
+                ]
+            },
+            role5: {
+                icon: '🔧',
+                title: 'Роль: Мастер',
+                info: [
+                    { label: 'Определение', value: 'Технический специалист' },
+                    { label: 'Количество', value: '1 раз' },
+                    { label: 'Эффективность', value: '90%' }
+                ],
+                facts: [
+                    'Отвечал за техническую реализацию',
+                    'Работал с оборудованием',
+                    'Помогал другим с задачами'
+                ]
+            },
+            skill1: {
+                icon: '⚙️',
+                title: 'Навык: Техника',
+                info: [
+                    { label: 'Уровень', value: '85%' },
+                    { label: 'Категория', value: 'Технические навыки' },
+                    { label: 'Динамика', value: '+12%' }
+                ],
+                facts: [
+                    'Работа с Arduino и датчиками',
+                    'Основы программирования',
+                    'Сборка электронных схем'
+                ]
+            },
+            skill2: {
+                icon: '🔍',
+                title: 'Навык: Аналитика',
+                info: [
+                    { label: 'Уровень', value: '75%' },
+                    { label: 'Категория', value: 'Мышление' },
+                    { label: 'Динамика', value: '+8%' }
+                ],
+                facts: [
+                    'Обработка данных',
+                    'Поиск закономерностей',
+                    'Работа с таблицами'
+                ]
+            },
+            skill3: {
+                icon: '🤝',
+                title: 'Навык: Команда',
+                info: [
+                    { label: 'Уровень', value: '90%' },
+                    { label: 'Категория', value: 'Социальные навыки' },
+                    { label: 'Динамика', value: '+15%' }
+                ],
+                facts: [
+                    'Командная работа - сильная сторона',
+                    'Умение слушать и слышать',
+                    'Конструктивные предложения'
+                ]
+            },
+            skill4: {
+                icon: '👑',
+                title: 'Навык: Лидерство',
+                info: [
+                    { label: 'Уровень', value: '80%' },
+                    { label: 'Категория', value: 'Управление' },
+                    { label: 'Динамика', value: '+10%' }
+                ],
+                facts: [
+                    'Ведение группы к цели',
+                    'Принятие решений',
+                    'Мотивация команды'
+                ]
+            },
+            career: {
+                icon: '⚙️',
+                title: 'Карьерный профиль',
+                info: [
+                    { label: 'Профиль', value: 'Инженерный' },
+                    { label: 'Потенциал', value: 'Высокий' },
+                    { label: 'Рекомендация', value: 'IT направление' }
+                ],
+                facts: [
+                    'Техническое мышление развито на 85%',
+                    'Рекомендуется продолжить в robotics',
+                    'Перспективы: Инженер, Разработчик'
+                ]
+            },
+            'кружок1': {
+                icon: '🤖',
+                title: 'Робототехника',
+                info: [
+                    { label: 'Направление', value: 'Робототехника' },
+                    { label: 'Сложность', value: 'Средняя' },
+                    { label: 'Перспектива', value: 'Высокая' }
+                ],
+                facts: [
+                    'Создание автономных роботов',
+                    'Программирование микроконтроллеров',
+                    'Механика и электроника'
+                ]
+            },
+            'кружок2': {
+                icon: '🔧',
+                title: 'Arduino',
+                info: [
+                    { label: 'Направление', value: 'Электроника' },
+                    { label: 'Сложность', value: 'Начальная' },
+                    { label: 'Перспектива', value: 'Высокая' }
+                ],
+                facts: [
+                    'Работа с микроконтроллерами',
+                    'Основы схемотехники',
+                    'Прототипирование устройств'
+                ]
+            },
+            'кружок3': {
+                icon: '🎨',
+                title: '3D-моделирование',
+                info: [
+                    { label: 'Направление', value: 'Дизайн' },
+                    { label: 'Сложность', value: 'Средняя' },
+                    { label: 'Перспектива', value: 'Средняя' }
+                ],
+                facts: [
+                    'Создание 3D-объектов',
+                    'Работа в Blender/SketchUp',
+                    'Проектирование и прототипирование'
+                ]
+            },
+            ach1: {
+                icon: '🎯',
+                title: 'Достижение: Лидер команды',
+                info: [
+                    { label: 'Тип', value: 'Лидерство' },
+                    { label: 'Получено', value: '08.06.2024' },
+                    { label: 'Редкость', value: 'Редкое' }
+                ],
+                facts: [
+                    'Присвоено за успешное руководство командой',
+                    'Команда достигла всех целей',
+                    'Получено 2 из 5 возможных лидерских достижений'
+                ]
+            },
+            ach2: {
+                icon: '💡',
+                title: 'Достижение: Инноватор',
+                info: [
+                    { label: 'Тип', value: 'Креативность' },
+                    { label: 'Получено', value: '10.06.2024' },
+                    { label: 'Редкость', value: 'Уникальное' }
+                ],
+                facts: [
+                    'Предложил 3 новых решения в проекте',
+                    'Оригинальный подход к задачам',
+                    'Только 5% учеников получают это достижение'
+                ]
+            },
+            ach3: {
+                icon: '🤝',
+                title: 'Достижение: Командный игрок',
+                info: [
+                    { label: 'Тип', value: 'Социальные навыки' },
+                    { label: 'Получено', value: '05.06.2024' },
+                    { label: 'Редкость', value: 'Обычное' }
+                ],
+                facts: [
+                    '100% участие во всех командных активностях',
+                    'Помог 8 раз другим участникам',
+                    'Ни одного конфликта за смену'
+                ]
+            },
+            ach4: {
+                icon: '📣',
+                title: 'Достижение: Лучший спикер',
+                info: [
+                    { label: 'Тип', value: 'Ораторское мастерство' },
+                    { label: 'Получено', value: '14.06.2024' },
+                    { label: 'Редкость', value: 'Редкое' }
+                ],
+                facts: [
+                    'Лучшая презентация на демо-дне',
+                    'Оценка жюри: 98/100',
+                    'Запомнился оригинальной подачей материала'
+                ]
+            },
+            disc: {
+                icon: '🎯',
+                title: 'DISC Профиль',
+                info: [
+                    { label: 'Тип', value: 'SI (Стабильный-Влиятельный)' },
+                    { label: 'Доминирование (D)', value: '65%' },
+                    { label: 'Влияние (I)', value: '78%' },
+                    { label: 'Стабильность (S)', value: '82%' },
+                    { label: 'Сознательность (C)', value: '71%' }
+                ],
+                facts: [
+                    'Высокая стабильность - любит работать в команде',
+                    'Хорошие коммуникативные навыки - легко находит общий язык',
+                    'Предпочитает структурированные задачи',
+                    'Умеет слушать и слышать окружающих',
+                    'Немного не хватает уверенности в принятии решений'
+                ]
+            },
+            web1: {
+                icon: '🎨',
+                title: 'UI/UX Design',
+                info: [
+                    { label: 'Уровень', value: 'Высокий' },
+                    { label: 'Оценка', value: '92%' },
+                    { label: 'Прогресс', value: '+18%' }
+                ],
+                facts: [
+                    'Создание интерактивных прототипов',
+                    'Работа с цветом и типографикой',
+                    'Понимание пользовательского опыта'
+                ]
+            },
+            web2: {
+                icon: '💻',
+                title: 'HTML/CSS',
+                info: [
+                    { label: 'Уровень', value: 'Высокий' },
+                    { label: 'Оценка', value: '88%' },
+                    { label: 'Прогресс', value: '+15%' }
+                ],
+                facts: [
+                    'Вёрстка адаптивных макетов',
+                    'Работа с Flexbox и Grid',
+                    'CSS-анимации и трансформации'
+                ]
+            },
+            web3: {
+                icon: '⚡',
+                title: 'JavaScript',
+                info: [
+                    { label: 'Уровень', value: 'Средний' },
+                    { label: 'Оценка', value: '72%' },
+                    { label: 'Прогресс', value: '+22%' }
+                ],
+                facts: [
+                    'Основы программирования',
+                    'Работа с DOM',
+                    'События и обработчики'
+                ]
+            },
+            web4: {
+                icon: '📱',
+                title: 'Адаптивность',
+                info: [
+                    { label: 'Уровень', value: 'Высокий' },
+                    { label: 'Оценка', value: '85%' },
+                    { label: 'Прогресс', value: '+12%' }
+                ],
+                facts: [
+                    'Mobile-first подход',
+                    'Тестирование на разных устройствах',
+                    'Кроссбраузерная вёрстка'
+                ]
+            },
+            hs1: {
+                icon: '⚙️',
+                title: 'Программирование',
+                info: [
+                    { label: 'Языки', value: 'Python, JS' },
+                    { label: 'Уровень', value: 'Продвинутый' },
+                    { label: 'Проектов', value: '5' }
+                ],
+                facts: [
+                    'Написание чистого кода',
+                    'Работа с алгоритмами',
+                    'Основы ООП'
+                ]
+            },
+            hs2: {
+                icon: '🎨',
+                title: 'Дизайн',
+                info: [
+                    { label: 'Инструменты', value: 'Figma, Sketch' },
+                    { label: 'Уровень', value: 'Средний' },
+                    { label: 'Проектов', value: '3' }
+                ],
+                facts: [
+                    'Создание макетов',
+                    'Прототипирование',
+                    'Работа с компонентами'
+                ]
+            },
+            hs3: {
+                icon: '📊',
+                title: 'Аналитика',
+                info: [
+                    { label: 'Инструменты', value: 'Excel, Data' },
+                    { label: 'Уровень', value: 'Высокий' },
+                    { label: 'Проектов', value: '4' }
+                ],
+                facts: [
+                    'Обработка данных',
+                    'Визуализация результатов',
+                    'Статистический анализ'
+                ]
+            },
+            hs4: {
+                icon: '🤖',
+                title: 'Робототехника',
+                info: [
+                    { label: 'Платформа', value: 'Arduino' },
+                    { label: 'Уровень', value: 'Средний' },
+                    { label: 'Проектов', value: '2' }
+                ],
+                facts: [
+                    'Работа с датчиками',
+                    'Программирование микроконтроллеров',
+                    'Сборка электронных схем'
+                ]
+            },
+            comp1: { icon: '🧠', title: 'Критическое мышление', info: [{ label: 'Уровень', value: '85%' }, { label: 'Прогресс', value: '+12%' }], facts: ['Анализ информации', 'Логическое рассуждение', 'Оценка доказательств'] },
+            comp2: { icon: '💬', title: 'Коммуникация', info: [{ label: 'Уровень', value: '90%' }, { label: 'Прогресс', value: '+15%' }], facts: ['Ясное изложение мыслей', 'Активное слушание', 'Эффективная обратная связь'] },
+            comp3: { icon: '📋', title: 'Самоорганизация', info: [{ label: 'Уровень', value: '78%' }, { label: 'Прогресс', value: '+8%' }], facts: ['Планирование времени', 'Расстановка приоритетов', 'Управление задачами'] },
+            comp4: { icon: '🚀', title: 'Инициатива', info: [{ label: 'Уровень', value: '82%' }, { label: 'Прогресс', value: '+10%' }], facts: ['Проактивность', 'Предложение идей', 'Готовность к действию'] },
+            comp5: { icon: '🧩', title: 'Решение проблем', info: [{ label: 'Уровень', value: '88%' }, { label: 'Прогресс', value: '+14%' }], facts: ['Анализ ситуации', 'Поиск решений', 'Принятие решений'] },
+            comp6: { icon: '📚', title: 'Умение учиться', info: [{ label: 'Уровень', value: '75%' }, { label: 'Прогресс', value: '+18%' }], facts: ['Быстрое усвоение', 'Самообучение', 'Применение знаний'] },
+            comp7: { icon: '🎨', title: 'Креативность', info: [{ label: 'Уровень', value: '80%' }, { label: 'Прогресс', value: '+11%' }], facts: ['Генерация идей', 'Нестандартное мышление', 'Творческий подход'] },
+            comp8: { icon: '🤝', title: 'Сотрудничество', info: [{ label: 'Уровень', value: '92%' }, { label: 'Прогресс', value: '+9%' }], facts: ['Командная работа', 'Взаимопомощь', 'Разрешение конфликтов'] },
+            comp9: { icon: '🔍', title: 'Любознательность', info: [{ label: 'Уровень', value: '95%' }, { label: 'Прогресс', value: '+5%' }], facts: ['Интерес к новому', 'Вопросы и исследования', 'Расширение кругозора'] },
+            comp10: { icon: '🔄', title: 'Адаптивность', info: [{ label: 'Уровень', value: '77%' }, { label: 'Прогресс', value: '+13%' }], facts: ['Гибкость мышления', 'Быстрая адаптация', 'Работа в изменении'] },
+            comp11: { icon: '💪', title: 'Настойчивость', info: [{ label: 'Уровень', value: '84%' }, { label: 'Прогресс', value: '+7%' }], facts: ['Доведение дел до конца', 'Преодоление препятствий', 'Не сдаваться'] },
+            comp12: { icon: '🏛️', title: 'Гражданская позиция', info: [{ label: 'Уровень', value: '70%' }, { label: 'Прогресс', value: '+16%' }], facts: ['Социальная ответственность', 'Участие в жизни', 'Этические ценности'] }
+        };
+
+        // Функция для получения случайного факта
+        function getRandomFact(facts) {
+            return facts[Math.floor(Math.random() * facts.length)];
+        }
+
+        // Функция открытия popup
+        function openPopup(type) {
+            const data = popupData[type];
+            if (!data) return;
+
+            const overlay = document.getElementById('popup');
+            const icon = document.getElementById('popupIcon');
+            const title = document.getElementById('popupTitle');
+            const info = document.getElementById('popupInfo');
+            const fact = document.getElementById('popupFact');
+
+            // Установка данных
+            icon.textContent = data.icon;
+            title.textContent = data.title;
+            
+            // Генерация информации
+            info.innerHTML = data.info.map(item => 
+                '<div class="popup-info-item"><span class="popup-info-label">' + item.label + '</span><span class="popup-info-value">' + item.value + '</span></div>'
+            ).join('');
+
+            // Случайный факт
+            fact.innerHTML = '<span class="popup-fact-icon">💡</span>' + getRandomFact(data.facts);
+
+            // Показ popup
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Функция закрытия popup
+        function closePopup() {
+            const overlay = document.getElementById('popup');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Закрытие по клику на фон
+        document.getElementById('popup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+        });
+
+        // Делегирование событий для кликабельных элементов
+        document.addEventListener('click', function(e) {
+            const clickable = e.target.closest('.clickable');
+            if (clickable) {
+                const type = clickable.getAttribute('data-type');
+                if (type) {
+                    openPopup(type);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
